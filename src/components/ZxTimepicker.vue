@@ -5,15 +5,15 @@
       <div class="timepicker-inner" v-show="displayMainView">
         <div class="timepicker-body">
           <div class="timepicker-range">
-            <span class="hover"><i class="glyphicon glyphicon-chevron-up"></i></span>
+            <span class="hover" @click="hourStep(1)"><i class="glyphicon glyphicon-chevron-up"></i></span>
             <span>&nbsp;</span>
-            <span class="hover"><i class="glyphicon glyphicon-chevron-up"></i></span>
+            <span class="hover" @click="minuteStep(1)"><i class="glyphicon glyphicon-chevron-up"></i></span>
             <span class="hover" @click="hourSelect">{{hour}}</span>
             <span>:</span>
             <span class="hover" @click="minuteSelect">{{minute}}</span>
-            <span class="hover"><i class="glyphicon glyphicon-chevron-down"></i></span>
+            <span class="hover" @click="hourStep(-1)"><i class="glyphicon glyphicon-chevron-down"></i></span>
             <span>&nbsp;</span>
-            <span class="hover"><i class="glyphicon glyphicon-chevron-down"></i></span>
+            <span class="hover" @click="minuteStep(-1)"><i class="glyphicon glyphicon-chevron-down"></i></span>
           </div>
         </div>
       </div>
@@ -101,6 +101,18 @@ export default {
       this.displayHourView = false
       this.displayMinuteView = false
     },
+    hourStep (i) {
+      let t = Number(this.hour) + i
+
+      if (t > 23) {
+        t = 0
+      } else if (t < 0) {
+        t = 23
+      }
+
+      this.hour = ('0' + t).substr(-2)
+      this.$dispatch('change-time', this.fromTime, this.computeTime)
+    },
     hourSelect () {
       // this.showTimepicker = true
       this.displayMainView = false
@@ -112,6 +124,18 @@ export default {
       this.displayMainView = true
       this.displayHourView = false
 
+      this.$dispatch('change-time', this.fromTime, this.computeTime)
+    },
+    minuteStep (i) {
+      let t = Number(this.minute) + i
+
+      if (t > 59) {
+        t = 0
+      } else if (t < 0) {
+        t = 59
+      }
+
+      this.minute = ('0' + t).substr(-2)
       this.$dispatch('change-time', this.fromTime, this.computeTime)
     },
     minuteSelect () {

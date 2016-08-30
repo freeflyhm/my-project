@@ -39,9 +39,9 @@
       <div slot="modal-header" class="modal-header" style="padding: 8px 15px;">
         <h4>{{updateModelTitle}}</h4>
       </div>
-      <div slot="modal-body" class="modal-body" style="padding-bottom: 0;" @keyup.13="onSubmit">
+      <div slot="modal-body" class="modal-body" style="padding-bottom: 0;">
         <validator name="updateValidation">
-          <div class="row">
+          <form class="form-horizontal" novalidate @submit.prevent="onSubmit">
             <div class="form-group" :class="[$updateValidation.name.valid ? 'has-success' : 'has-error']">
               <label for="name" class="col-sm-3 control-label" style="padding-top: 8px;">* 用户</label>
               <div class="col-sm-9">
@@ -54,10 +54,9 @@
                   }"
                   class="form-control"
                   placeholder="2 ~ 4 个中文字符">
-                </div>
               </div>
-          </div>
-          <div class="row">
+            </div>
+
             <div class="form-group" :class="[$updateValidation.password.valid ? 'has-success' : 'has-error']">
               <label for="password" class="col-sm-3 control-label" style="padding-top: 8px;">* 密码</label>
               <div class="col-sm-9">
@@ -70,18 +69,25 @@
                   type="password"
                   class="form-control"
                   placeholder="6 ~ 20 个任意字符">
-                </div>
               </div>
-          </div>
-          <div class="row">
-            <div class="form-group errors">
-              <validator-errors partial="errorTemplate" :validation="$updateValidation"></validator-errors>
             </div>
-            <div v-if="showUpdateModalFooter" class="modal-footer">
-              <button :disabled="!$updateValidation.valid" class="btn btn-success" @click="onSubmit">提交</button>
-              <button class="btn btn-default" @click="showUpdateModal = false">取消</button>
+
+            <div class="row">
+              <div class="col-md-12 errors">
+                <validator-errors partial="errorTemplate" :validation="$updateValidation"></validator-errors>
+              </div>
             </div>
-          </div>
+
+            <div class="row">
+              <div v-if="showUpdateModalFooter" class="modal-footer">
+                <button
+                    type="submit"
+                    :disabled="!$updateValidation.valid"
+                    class="btn btn-success">提交</button>
+                <button type="button" class="btn btn-default" @click="showUpdateModal = false">取消</button>
+              </div>
+            </div>
+          </form>
         </validator>
       </div>
       <div slot="modal-footer" style="display: none;"></div>

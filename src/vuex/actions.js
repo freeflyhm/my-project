@@ -1,3 +1,7 @@
+export const setProvincecityobj = ({ dispatch }, provincecityobj) => {
+  dispatch('SET_PROVINCECITYOBJ', provincecityobj)
+}
+
 export const setSomebody = ({ dispatch }, isTrue) => {
   dispatch('SET_SOMEBODY', isTrue)
 }
@@ -16,6 +20,10 @@ export const setAuthenticated = ({ dispatch }, authenticated) => {
 
 export const setToken = ({ dispatch }, token) => {
   dispatch('SET_TOKEN', token)
+}
+
+export const setDbName = ({ dispatch }, dbName) => {
+  dispatch('SET_DB_NAME', dbName)
 }
 
 export const setSio = ({ dispatch }, sio) => {

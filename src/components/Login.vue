@@ -11,22 +11,50 @@
           </div>
         </div>
 
-        <div class="form-group">
-          <input type="text"
-              class="form-control"
-              placeholder="用户名"
-              v-model="credentials.userName">
-        </div>
-        <div class="form-group">
-          <input type="password"
-              class="form-control"
-              placeholder="密码"
-              v-model="credentials.password">
-        </div>
-        <button class="btn btn-primary btn-block" @click="submit">登录</button>
-        <div class="alert alert-danger" v-if="loginErr">
-          <p>{{loginErr}}</p>
-        </div>
+        <validator name="loginValidation">
+          <form class="form-horizontal" novalidate @submit.prevent="onLogin">
+            <div class="form-group" :class="[$loginValidation.lusername.valid ? 'has-success' : 'has-error']">
+              <div class="col-md-12">
+                <input
+                  v-model="lusername"
+                  v-validate:lusername="{
+                    minlength: {rule: 2, message: '用户名 - 太短！' },
+                    letterNum: {rule: true, message: '用户名 - 必须为字母或数字！' },
+                    maxlength: {rule: 15, message: '用户名 - 太长！' }
+                  }"
+                  class="form-control"
+                  placeholder="用户名">
+              </div>
+            </div>
+
+            <div class="form-group" :class="[$loginValidation.lpassword.valid ? 'has-success' : 'has-error']">
+              <div class="col-md-12">
+                <input
+                  type="password"
+                  v-model="lpassword"
+                  v-validate:lpassword="{
+                    minlength: {rule: 6, message: '密码 - 太短！'},
+                    maxlength: {rule: 20, message: '密码 - 太长！' }
+                  }"
+                  class="form-control"
+                  placeholder="密码">
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-12 errors">
+                <validator-errors partial="errorTemplate" :validation="$loginValidation"></validator-errors>
+              </div>
+            </div>
+
+            <div v-if="showLoginBtn">
+              <button
+                  type="submit"
+                  :disabled="!$loginValidation.valid"
+                  class="btn btn-primary btn-block">登录</button>
+            </div>
+          </form>
+        </validator>
       </div>
     </div>
 
@@ -38,15 +66,14 @@
       </div>
       <div slot="modal-body" class="modal-body" style="padding-bottom: 0;">
         <validator name="signupValidation">
-          <form class="form-horizontal" novalidate>
+          <form class="form-horizontal" novalidate @submit.prevent="onSignup">
             <div class="row">
               <div class="col-md-6">
                 <div class="form-group">
                   <label class="col-md-4 control-label">* 省份</label>
                   <div class="col-md-8">
                     <v-select placeholder="请选择省份" :value.sync="provinces">
-                      <v-option value="广东">广东</v-option>
-                      <v-option value="浙江">浙江</v-option>
+                      <v-option v-for="item of provinceoptions" :value="item">{{item}}</v-option>
                     </v-select>
                   </div>
                 </div>
@@ -118,6 +145,7 @@
                   <label class="col-md-4 control-label">* 密码</label>
                   <div class="col-md-8">
                     <input
+                      type="password"
                       v-model="upassword"
                       v-validate:upassword="{
                         minlength: {rule: 6, message: '密码 - 太短！'},
@@ -135,9 +163,9 @@
                   <label class="col-md-4 control-label">* 确认密码</label>
                   <div class="col-md-8">
                     <input
+                      type="password"
                       v-model="urepassword"
                       v-validate:urepassword="{
-                        minlength: {rule: 6, message: '确认密码 - 太短！'},
                         match: {rule: matchPassword, message: '确认密码 - 必须与密码一致！'}
                       }"
                       class="form-control"
@@ -251,8 +279,10 @@
 
             <div class="row">
               <div v-if="showSignupModalFooter" class="modal-footer">
-                <button :disabled="!$signupValidation.valid" class="btn btn-success" @click="onSignup">注册</button>
-                <button class="btn btn-default" @click="showSignupModal = false">取消</button>
+                <button type="submit"
+                    :disabled="!$signupValidation.valid"
+                    class="btn btn-success">注册</button>
+                <button type="button" class="btn btn-default" @click="showSignupModal = false">取消</button>
               </div>
             </div>
 
@@ -265,18 +295,30 @@
 </template>
 
 <script>
-import { signup, login } from '../util/auth'
+import store from '../vuex/store'
+import { login, signup } from '../util/auth'
 import vueStrap from 'vue-strap'
+import Errmsg from '../util/errmsg'
 
 export default {
+  store,
+  vuex: {
+    getters: {
+      provincecityobj: state => state.provincecityobj
+    }
+  },
   components: {
     vSelect: vueStrap.select,
     vOption: vueStrap.option,
     modal: vueStrap.modal
   },
+
   data () {
     return {
-      provinces: ['广东'],
+      lusername: '',
+      lpassword: '',
+      showLoginBtn: true,
+      provinces: [],
       cities: [],
       cname: '',
       ctel: '',
@@ -289,24 +331,27 @@ export default {
       uphone: '',
       uqq: '',
       ucompanyabbr: '',
-      credentials: {
-        userName: '',
-        password: ''
-      },
-      loginErr: '',
       showSignupModal: false,
       showSignupModalFooter: true
     }
   },
+
   computed: {
-    cityoptions () {
-      if (this.provinces[0] === '广东') {
-        this.cities = ['深圳']
-        return ['深圳', '广州']
-      } else if (this.provinces[0] === '浙江') {
-        this.cities = ['杭州']
-        return ['杭州']
+    provinceoptions () {
+      var ps = Object.keys(this.provincecityobj)
+
+      if (ps.length) {
+        this.provinces = [ps[0]]
       }
+      return ps
+    },
+    cityoptions () {
+      var cs = []
+      if (this.provinces[0]) {
+        cs = Object.keys(this.provincecityobj[this.provinces[0]])
+        this.cities = [cs[0]]
+      }
+      return cs
     },
     matchUserName () {
       return this.upassword !== this.uusername
@@ -315,22 +360,29 @@ export default {
       return this.urepassword === this.upassword
     }
   },
+
   methods: {
-    submit () {
-      let creds = {
-        userName: this.credentials.userName,
-        password: this.credentials.password
-      }
-
-      // 本地检查 待实现
-
-      login(this, creds, (results) => {
-        if (results.success === 1) {
-          this.loginErr = ''
-        } else {
-          this.loginErr = results.errMsg
+    onLogin () {
+      if (this.$loginValidation.valid) {
+        this.showLoginBtn = false
+        let user = {
+          userName: this.lusername,
+          password: this.lpassword
         }
-      })
+
+        login(this, user, (results) => {
+          this.showLoginBtn = true
+          if (results.success === 1) {
+            window.localStorage.setItem('token', results.token)
+            window.localStorage.setItem('dbName', results.dbName)
+            this.$router.go('/home')
+          } else {
+            this.$setValidationErrors([
+              { field: Errmsg[results.success].field, message: Errmsg[results.success].errMsg }
+            ])
+          }
+        })
+      }
     },
 
     onSignup () {
@@ -365,6 +417,13 @@ export default {
       }
     }
   }
+  // ready () {
+  //   provincecity(this, (results) => {
+  //     if (results && Object.keys(results).length) {
+  //       this.provincecityobj = results
+  //     }
+  //   })
+  // }
 }
 </script>
 

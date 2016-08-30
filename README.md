@@ -26,5 +26,6 @@ npm test
 
 For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
 
+# upload
 scp ./dist/index.html root@120.76.232.12:/root/nginx/web
 scp -r ./dist/static root@120.76.232.12:/root/nginx/web

@@ -82,52 +82,80 @@
               <tr v-for="name of names">
                 <td>{{name}}</td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].basStepPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].basStepPrice | convertPositiveYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].basMaxPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].basMaxPrice | convertPositiveYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
                 <td class="edit">
-                  <input class="time" v-model="activeItemClone['t' + ($index + 1)].addStartTime" @click="showTime($event, 'activeItemClone.t' + ($index + 1) + '.addStartTime')">
+                  <input
+                    class="time"
+                    v-model="activeItemClone['t' + ($index + 1)].addStartTime | convertTime"
+                    @keyup.enter.stop.prevent
+                    @click="showTime($event, 'activeItemClone.t' + ($index + 1) + '.addStartTime')">
                 </td>
                 <td class="edit">
-                  <input class="time" v-model="activeItemClone['t' + ($index + 1)].addEndTime" @click="showTime($event, 'activeItemClone.t' + ($index + 1) + '.addEndTime')">
+                  <input
+                    class="time"
+                    v-model="activeItemClone['t' + ($index + 1)].addEndTime | convertTime"
+                    @keyup.enter.stop.prevent
+                    @click="showTime($event, 'activeItemClone.t' + ($index + 1) + '.addEndTime')">
                 </td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].addPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].addPrice | convertPositiveYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].putPersonNum">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].putPersonNum | convertPositiveNum"
+                    @keyup.enter.stop.prevent>
                 </td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].putPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].putPrice | convertPositiveYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
               </tr>
             </tbody>
             <tbody v-else>
               <tr v-for="name of names">
-                <td>{{ name }}</td>
-                <td>{{ basicFeestemp['t' + ($index + 1)].basStepPrice | currencyYuan }}</td>
+                <td>{{name}}</td>
+                <td>{{ basicFeestemp['t' + ($index + 1)].basStepPrice | convertPositiveYuan }}</td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].basStepPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].basStepPrice | convertYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
-                <td>{{ basicFeestemp['t' + ($index + 1)].basMaxPrice | currencyYuan }}</td>
+                <td>{{ basicFeestemp['t' + ($index + 1)].basMaxPrice | convertPositiveYuan }}</td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].basMaxPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].basMaxPrice | convertYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
                 <td>{{ activeItemClone['t' + ($index + 1)].addStartTime }}</td>
                 <td>{{ activeItemClone['t' + ($index + 1)].addEndTime }}</td>
-                <td>{{ basicFeestemp['t' + ($index + 1)].addPrice | currencyYuan }}</td>
+                <td>{{ basicFeestemp['t' + ($index + 1)].addPrice | convertPositiveYuan }}</td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].addPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].addPrice | convertYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
                 <td>{{ basicFeestemp['t' + ($index + 1)].putPersonNum }}</td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].putPersonNum">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].putPersonNum | convertNum"
+                    @keyup.enter.stop.prevent>
                 </td>
-                <td>{{ basicFeestemp['t' + ($index + 1)].putPrice | currencyYuan }}</td>
+                <td>{{ basicFeestemp['t' + ($index + 1)].putPrice | convertPositiveYuan }}</td>
                 <td class="edit">
-                  <input v-model="activeItemClone['t' + ($index + 1)].putPrice | currencyYuan">
+                  <input
+                    v-model="activeItemClone['t' + ($index + 1)].putPrice | convertYuan"
+                    @keyup.enter.stop.prevent>
                 </td>
               </tr>
             </tbody>
@@ -137,7 +165,11 @@
           v-on:change-time="changeTime"></zx-timepicker>
           <div v-if="showUpdateModalFooter" class="modal-footer">
             <div v-if="!isBasic" class="input-group" style="max-width: 200px; float: left;">
-              <input class="form-control" v-model="newTempName" placeholder="新模板名称">
+              <input
+                class="form-control"
+                v-model="newTempName"
+                placeholder="新模板名称"
+                @keyup.enter.stop.prevent>
               <span class="input-group-btn">
                 <button class="btn btn-primary" @click="onAdd">复制新增</button>
               </span>

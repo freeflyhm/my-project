@@ -12,7 +12,7 @@
               <span class="glyphicon glyphicon-chevron-left"></span>
             </button>
           </span>
-          <zx-datepicker></zx-datepicker>
+          <!-- <zx-datepicker></zx-datepicker> -->
           <span class="input-group-btn">
             <button class="btn btn-default">
               <span class="glyphicon glyphicon-chevron-right"></span>
@@ -47,7 +47,7 @@
 
 <script>
 import store from '../vuex/store'
-import { emitSmlist } from '../util/auth'
+// import { emitSmlist } from '../util/auth'
 import zxDatepicker from './ZxDatepicker'
 
 export default {
@@ -59,10 +59,10 @@ export default {
   },
   route: {
     data () {
-      if (this.city) {
-        console.info('Smlist.vue data 向服务器获取 smlist')
-        emitSmlist()
-      }
+      // if (this.city) {
+      //   console.info('Smlist.vue data 向服务器获取 smlist')
+      //   emitSmlist()
+      // }
     }
   },
   components: {

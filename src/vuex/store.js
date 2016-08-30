@@ -1,6 +1,7 @@
 /**
  * somebody: 有人已登录
- *
+ * company: { _id, category, city }
+ * user: { _id, name, role, status }
  */
 
 import Vue from 'vue'
@@ -9,10 +10,12 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 
 const state = {
+  provincecityobj: {},
   somebody: false,
   sids: [],
   authenticated: false,
   token: '',
+  dbName: '',
   sio: {},
   smlistDate: '',
   company: {},
@@ -21,6 +24,10 @@ const state = {
 }
 
 const mutations = {
+  SET_PROVINCECITYOBJ (state, provincecityobj) {
+    state.provincecityobj = provincecityobj
+  },
+
   // 有人已登录
   SET_SOMEBODY (state, isTrue) {
     state.somebody = isTrue
@@ -44,6 +51,11 @@ const mutations = {
     state.token = token
   },
 
+  // sz
+  SET_DB_NAME (state, dbName) {
+    state.dbName = dbName
+  },
+
   SET_SIO (state, sio) {
     state.sio = sio
   },
@@ -60,6 +72,7 @@ const mutations = {
     state.user = user
   },
 
+  // 深圳
   SET_CITY (state, city) {
     state.city = city
   }
