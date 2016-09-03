@@ -295,13 +295,13 @@
 </template>
 
 <script>
-import store from '../vuex/store'
+// import store from '../vuex/store'
 import { login, signup } from '../util/auth'
 import vueStrap from 'vue-strap'
 import Errmsg from '../util/errmsg'
 
 export default {
-  store,
+  // store,
   vuex: {
     getters: {
       provincecityobj: state => state.provincecityobj
@@ -371,6 +371,7 @@ export default {
         }
 
         login(this, user, (results) => {
+          console.log(results)
           this.showLoginBtn = true
           if (results.success === 1) {
             window.localStorage.setItem('token', results.token)

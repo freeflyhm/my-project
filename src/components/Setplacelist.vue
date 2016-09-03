@@ -44,6 +44,8 @@ import { emitToServer } from '../util/auth'
 export default {
   route: {
     data () {
+      // arguments: null
+      // return: Array - all field
       emitToServer('setplacelist', null, (results) => {
         this.setplaces = results
       })

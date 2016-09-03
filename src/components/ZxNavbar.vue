@@ -9,6 +9,7 @@
 
 <script>
 import EventListener from '../util/eventListener'
+
 export default {
   methods: {
     toggleCollapse (e) {

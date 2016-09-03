@@ -123,6 +123,8 @@ export default {
   },
   route: {
     data () {
+      // arguments: null
+      // return: Array - all field
       emitToServer('dengjipailist', null, (results) => {
         this.items = results
       })

@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import store from '../vuex/store'
+// import store from '../vuex/store'
 import vueStrap from 'vue-strap'
 import moment from 'moment'
 import { emitToServer } from '../util/auth'
@@ -46,7 +46,7 @@ import { emitToServer } from '../util/auth'
 import echarts from 'echarts'
 
 export default {
-  store,
+  // store,
   vuex: {
     getters: {
       city: state => state.city

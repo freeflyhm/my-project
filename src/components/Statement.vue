@@ -194,11 +194,11 @@ import vueStrap from 'vue-strap'
 import moment from 'moment'
 import Docxtemplater from 'docxtemplater'
 import { saveAs } from 'filesaver.js'
-import store from '../vuex/store'
+// import store from '../vuex/store'
 import { emitToServer, loadFile } from '../util/auth'
 
 export default {
-  store,
+  // store,
   vuex: {
     getters: {
       company: state => state.company

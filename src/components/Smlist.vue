@@ -46,12 +46,12 @@
 </template>
 
 <script>
-import store from '../vuex/store'
+// import store from '../vuex/store'
 // import { emitSmlist } from '../util/auth'
 import zxDatepicker from './ZxDatepicker'
 
 export default {
-  store,
+  // store,
   vuex: {
     getters: {
       city: state => state.city

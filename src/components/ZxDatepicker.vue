@@ -91,11 +91,11 @@
 
 <script>
 import EventListener from '../util/eventListener.js'
-import store from '../vuex/store'
+// import store from '../vuex/store'
 import { updateDate } from '../util/auth'
 
 export default {
-  store,
+  // store,
   vuex: {
     getters: {
       value: state => state.smlistDate

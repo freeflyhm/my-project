@@ -92,12 +92,12 @@
 </template>
 
 <script>
-import store from '../vuex/store'
+// import store from '../vuex/store'
 import moment from 'moment'
 import { emitToServer } from '../util/auth'
 
 export default {
-  store,
+  // store,
   vuex: {
     getters: {
       city: state => state.city

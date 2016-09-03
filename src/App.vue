@@ -101,11 +101,11 @@
                 <span class="caret"><span>
               </a>
               <ul slot="dropdown-menu" class="dropdown-menu">
-                <li><a tabindex="-1" v-link="{ name: 'setplacelist' }">集合地点管理</a></li>
+                <li><a tabindex="-1" v-link="{ name: 'setplacelist' }">集合地点列表</a></li>
                 <li class="divider"></li>
-                <li><a tabindex="-1" v-link="{ name: 'feestemplist' }">服务费模板管理</a></li>
+                <li><a tabindex="-1" v-link="{ name: 'feestemplist' }">服务费模板列表</a></li>
                 <li class="divider"></li>
-                <li><a tabindex="-1" v-link="{ name: 'dengjipailist' }">登机牌用户管理</a></li>
+                <li><a tabindex="-1" v-link="{ name: 'dengjipailist' }">登机牌用户列表</a></li>
                 <li class="divider"></li>
                 <li><a tabindex="-1" v-link="{ name: 'companylist' }">公司列表</a></li>
               </ul>
@@ -255,7 +255,7 @@
             </div>
             <div v-else>
               <p><em style="color: red;">已通知对方下线, 请不要离开此页！</em></p>
-              <p v-if="waitTime < 61">如果对方没有拒绝, 您将在 <strong style="color: red;">{{ waitTime }}</strong> 秒内自动上线</p>
+              <p v-if="waitTime < maxShowWaitTime">如果对方没有拒绝, 您将在 <strong style="color: red;">{{ waitTime }}</strong> 秒内自动上线</p>
             </div>
           </div>
         </div>
@@ -281,7 +281,7 @@ import store from './vuex/store'
 
 import { emitToServer, logout, setStoreSomebodyFalse, clearStoreSids, provincecity } from './util/auth'
 
-const TIME_SPAN = 60 // 秒
+const TIME_SPAN = 30 // 秒
 let id = null
 let idWait = null
 
@@ -314,6 +314,7 @@ export default {
       cancelTime: TIME_SPAN,
       waitMinus: false,
       waitTime: TIME_SPAN + 2,
+      maxShowWaitTime: TIME_SPAN + 1,
       showModalFooter: true,
       pwd: {
         passwordold: '',
@@ -435,7 +436,15 @@ export default {
       emitToServer('changeRoom', dbName, null)
     },
     onSubmit () {
-      console.log(this.pwd)
+      var userObj = {
+        _id: this.user._id,
+        passwordold: this.pwd.passwordold,
+        password: this.pwd.password
+      }
+
+      emitToServer('changePassword', userObj, function (result) {
+        console.log(result)
+      })
     }
   },
   created () {

@@ -32,7 +32,7 @@
             <td>{{item.idcardfee ? item.idcardfee/1000 : ''}}</td>
             <td>{{item.meta.createAt | formatYYYYMMDD}}</td>
             <td><button class="btn btn-xs btn-primary">修改</button></td>
-            <td><a class="btn btn-xs btn-info" href="#">进入用户页 >></a></td>
+            <td><a class="btn btn-xs btn-info" v-link="{ name: 'userlist', params: { cid: item._id }}">进入用户页 >></a></td>
           </tr>
         </tbody>
       </table>

@@ -4,6 +4,21 @@ import Vue from 'vue'
 import moment from 'moment'
 
 export default function () {
+  Vue.filter('formatRole', (value) => {
+    switch (value) {
+      case 0:
+        return '禁止登录'
+      case 10:
+        return '操作员'
+      case 20:
+        return '负责人'
+      case 30:
+        return '总负责人'
+      case 99:
+        return '超级管理员'
+    }
+  })
+
   Vue.filter('formatYYYYMMDD', (value) => {
     return moment(value).format('YYYY-MM-DD')
   })

@@ -188,6 +188,7 @@
 import vueStrap from 'vue-strap'
 import { emitToServer, cloneObj } from '../util/auth'
 import zxTimepicker from './ZxTimepicker'
+import Errmsg from '../util/errmsg'
 
 export default {
   components: {
@@ -196,6 +197,8 @@ export default {
   },
   route: {
     data () {
+      // arguments: null
+      // return: Array - all field
       emitToServer('feestemplist', null, (results) => {
         this.results = results
       })
@@ -276,7 +279,7 @@ export default {
           this.activeItem = null
           this.activeItemClone = null
         } else {
-          window.alert(results.errMsg)
+          window.alert(Errmsg[results.success].errMsg)
         }
       })
     },
@@ -297,7 +300,7 @@ export default {
             this.activeItemClone = null
             this.newTempName = ''
           } else {
-            window.alert(results.errMsg)
+            window.alert(Errmsg[results.success].errMsg)
           }
         })
       }
